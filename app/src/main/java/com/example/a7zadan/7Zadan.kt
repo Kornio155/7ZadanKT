@@ -67,7 +67,65 @@ fun mainQuoteGenerator() {
     }
 }
 
+// 3. Favorite Books Tracker
+data class Book(val title: String, val author: String, val year: Int)
+
+class BookTracker {
+    private val books = mutableListOf<Book>()
+
+    fun addBook(book: Book) {
+        books.add(book)
+    }
+
+    fun filterByAuthor(author: String): List<Book> {
+        return books.filter { it.author.equals(author, ignoreCase = true) }
+    }
+
+    fun filterByYear(year: Int): List<Book> {
+        return books.filter { it.year == year }
+    }
+
+    fun sortByTitle(): List<Book> {
+        return books.sortedBy { it.title }
+    }
+
+    fun getAllBooks(): List<Book> {
+        return books
+    }
+}
+
+fun mainBookTracker() {
+    val tracker = BookTracker()
+    tracker.addBook(Book("Wiedźmin. Rozdroże kruków", "Andrzej Sapkowski", 2024))
+    tracker.addBook(Book("Oszpicyn", "Krzysztof Zajas", 2017))
+    tracker.addBook(Book("Star Wars. Koniec i początek", "Chuck Wendig", 2015))
+    tracker.addBook(Book("www.1939.com.pl", "Marcin Ciszewski", 2023))
+    tracker.addBook(Book("Morderstwo w Orient Expressie", "Agata Christie", 2010))
+
+    println("Wybierz: 1 aby dodać książkę, 2 aby filtrować według autora, 3 aby filtrować według roku, 4 aby sortować według tytułu, 5 aby wyświetlić listę wszystkich książek")
+    when (readln().toInt()) {
+        1 -> {
+            println("Wpisz tytuł, autora i rok wydania:")
+            val (title, author, year) = readln().split(", ")
+            tracker.addBook(Book(title, author, year.toInt()))
+            println("Książka dodana!")
+        }
+        2 -> {
+            println("Podaj autora:")
+            val author = readln()
+            println("Kiążki napisane przez $author: ${tracker.filterByAuthor(author)}")
+        }
+        3 -> {
+            println("Podaj rok")
+            val year = readln().toInt()
+            println("Książki z roku $year: ${tracker.filterByYear(year)}")
+        }
+        4 -> println("Książki posortowane alfabetycznie: ${tracker.sortByTitle()}")
+        5 -> println("Wszytskie książki: ${tracker.getAllBooks()}")
+        else -> println("Niepoprawny wybór")
+    }
+}
 
 fun main(){
-    mainQuoteGenerator()
+    mainBookTracker()
 }
