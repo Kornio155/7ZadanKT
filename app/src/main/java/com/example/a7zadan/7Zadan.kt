@@ -126,6 +126,87 @@ fun mainBookTracker() {
     }
 }
 
+// 4. Weather App (Simple Simulation)
+data class City(val name: String, val weather: Weather)
+
+interface Weather {
+    fun getForecast(): String
+}
+
+class Sunny : Weather {
+    override fun getForecast() = "Słonecznie i jasno!"
+}
+
+class Rainy : Weather {
+    override fun getForecast() = "Pada deszcz."
+}
+
+class Cloudy : Weather {
+    override fun getForecast() = "Pochmurno."
+}
+
+fun mainWeatherApp() {
+    val cities = listOf(
+        City("Olsztyn", Sunny()),
+        City("Gdańsk", Rainy()),
+        City("Bydgoszcz", Cloudy()),
+        City("Płock", Cloudy()),
+        City("Łomża", Rainy()),
+        City("Kraków", Sunny()),
+
+    )
+
+    println("Wybierz miasto: ${cities.map { it.name }.joinToString()}")
+    val cityName = readln()
+    val city = cities.find { it.name.equals(cityName, ignoreCase = true) }
+
+    if (city != null) {
+        println("Pogoda w  ${city.name}: ${city.weather.getForecast()}")
+    } else {
+        println("Nie znaleziono miasta.")
+    }
+}
+
+// 5. Step Counter
+class StepCounter {
+    companion object {
+        private var steps = 0
+
+        fun step() {
+            steps++
+        }
+
+        fun reset() {
+            steps = 0
+        }
+
+        fun getSteps(): Int {
+            return steps
+        }
+    }
+}
+
+fun mainStepCounter() {
+    while(true) {
+        println("Wybierz: 1 aby dodać krok, 2 aby zresetowac kroki lub 3 aby zobaczyc liczbe krokow")
+        when (readln().toInt()) {
+            1 -> {
+                StepCounter.step()
+                println("Zrobiono krok!")
+            }
+
+            2 -> {
+                StepCounter.reset()
+                println("Licznik zresetowany.")
+            }
+
+            3 -> println("Kroki: ${StepCounter.getSteps()}")
+            4 -> break
+            else -> println("Niepoprawny wybór")
+        }
+    }
+}
+
 fun main(){
-    mainBookTracker()
+    mainStepCounter()
 }
